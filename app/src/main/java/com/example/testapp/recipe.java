@@ -41,20 +41,22 @@ public class recipe {
     private ArrayList<recipe> similar;
 
 
-
-    void setName(String name){
+    public ArrayList<String> getImages(){
+        return images;
+    }
+    public void setName(String name){
         this.name = name;
     }
 
-    String getName(){
+    public String getName(){
         return this.name;
     }
 
-    String getDescription(){
+    public String getDescription(){
         return description;
     }
 
-    UUID getUUID(){
+    public UUID getUUID(){
         return this.uuid;
     }
 
