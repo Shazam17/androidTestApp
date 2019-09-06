@@ -8,8 +8,14 @@ import retrofit2.http.GET;
 
 public interface JSONPlaceHolderApi {
     @GET("https://test.kode-t.ru/recipes")
-    public Call<List<recipe>>getRecipes();
+    public Call<ListModel>getRecipes();
 
-    @GET("https://test.kode-t.ru//recipes/fc988768-c1e9-11e6-a4a6-cec0c932ce01")
+    @GET("/recipes/fc988768-c1e9-11e6-a4a6-cec0c932ce01")
     public Call<recipe>getRecipe();
+
+    @GET("/recipes/fc988768-c1e9-11e6-a4a6-cec0c932ce01")
+    public Call<WrapperRecipe>getRecipeWrapper();
+
+
+
 }

@@ -8,8 +8,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHolder> {
 
+
+    private ArrayList<recipe> recipes;
 
 
     class RecipeHolder extends RecyclerView.ViewHolder{
@@ -24,6 +29,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
     }
 
+
+    public RecipeAdapter(ArrayList<recipe> recipelist){
+        this.recipes = recipelist;
+    }
 
 
     @NonNull
@@ -40,12 +49,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
     @Override
     public void onBindViewHolder(@NonNull RecipeAdapter.RecipeHolder holder, int position) {
-            holder.name.setText("name");
-            holder.desc.setText("desc");
+            holder.name.setText(recipes.get(position).getName());
+            holder.desc.setText(recipes.get(position).getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return 6;
+        return recipes.size();
     }
 }

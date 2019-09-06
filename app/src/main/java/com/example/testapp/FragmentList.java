@@ -10,19 +10,29 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FragmentList extends Fragment {
 
     RecyclerView recList;
     RecipeAdapter adapter;
     RecyclerView.LayoutManager manager;
+    ArrayList<recipe> recipes;
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recList = view.findViewById(R.id.list);
-        adapter = new RecipeAdapter();
-        recList.setAdapter(adapter);
+
+        MainActivity activity = (MainActivity)getActivity();
+
+        adapter = new RecipeAdapter(activity.getRecipes());
         manager = new LinearLayoutManager(getActivity());
+        recList.setAdapter(adapter);
+
         recList.setLayoutManager(manager);
 
 

@@ -40,12 +40,18 @@ public class recipe {
     @Expose
     private ArrayList<recipe> similar;
 
+
+
     void setName(String name){
         this.name = name;
     }
 
     String getName(){
         return this.name;
+    }
+
+    String getDescription(){
+        return description;
     }
 
 }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,19 +28,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void parseSite(){
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        JSONPlaceHolderApi service = retrofit.create(JSONPlaceHolderApi.class);
 
-        Call<recipe> call = service.getRecipe();
 
-        call.enqueue(new Callback<recipe>() {
+      /*  Call<WrapperRecipe> call = service.getRecipeWrapper();
+        call.enqueue(new Callback<WrapperRecipe>() {
             @Override
-            public void onResponse(Call<recipe> call, Response<recipe> response) {
+            public void onResponse(Call<WrapperRecipe> call, Response<WrapperRecipe> response) {
+
+                Log.d("error","Success");
+
                 if(response.isSuccessful()){
-                    Toast tst1 = Toast.makeText(getApplicationContext(),response.body().getName(),Toast.LENGTH_SHORT);
+                    Toast tst1 = Toast.makeText(getApplicationContext(),response.body().getRec().getName(),Toast.LENGTH_SHORT);
                     tst1.show();
                 }else{
                     switch (response.code()){
@@ -54,29 +53,62 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<recipe> call, Throwable t) {
-
+            public void onFailure(Call<WrapperRecipe> call, Throwable t) {
+                Log.d("error",t.getMessage());
             }
-        });
+        });*/
 
     }
 
+    ArrayList<recipe> getRecipes(){
+        return this.recipes;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://test.kode-t.ru")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        JSONPlaceHolderApi service = retrofit.create(JSONPlaceHolderApi.class);
 
-        fragmentList = new FragmentList();
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        Call<ListModel> call = service.getRecipes();
 
-        transaction.replace(R.id.container,fragmentList);
+        call.enqueue(new Callback<ListModel>() {
+            @Override
+            public void onResponse(Call<ListModel> call, Response<ListModel> response) {
+                if(response.isSuccessful()){
+                    recipes = response.body().getRecipes();
 
-        transaction.commit();
+                    fragmentList = new FragmentList();
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container,fragmentList);
+                    transaction.commit();
 
-        parseSite();
+                }else{
+                    switch (response.code()){
+                        case 404:
+                            Toast tst1 = Toast.makeText(getApplicationContext(),"page didnt find",Toast.LENGTH_SHORT);
+                            tst1.show();
+                        case 500:
+                            Toast tst2 = Toast.makeText(getApplicationContext(),"Server Error",Toast.LENGTH_SHORT);
+                            tst2.show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListModel> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "failed " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
 
     }
 }
