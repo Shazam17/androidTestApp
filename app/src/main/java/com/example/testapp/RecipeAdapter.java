@@ -17,10 +17,20 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     private ArrayList<recipe> recipes;
 
 
-    class RecipeHolder extends RecyclerView.ViewHolder{
+    public interface OnItemClickListener{
+        void onItemClick(RecipeHolder holder, int position);
+    }
+
+    private OnItemClickListener onItemClickListener;
+
+
+
+
+    public class RecipeHolder extends RecyclerView.ViewHolder{
 
         TextView name;
         TextView desc;
+        int position;
         public RecipeHolder(View v){
             super(v);
             name = v.findViewById(R.id.name);
@@ -30,8 +40,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     }
 
 
-    public RecipeAdapter(ArrayList<recipe> recipelist){
+    public RecipeAdapter(ArrayList<recipe> recipelist, OnItemClickListener listener){
         this.recipes = recipelist;
+        this.onItemClickListener = listener;
     }
 
 
@@ -48,9 +59,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeAdapter.RecipeHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecipeAdapter.RecipeHolder holder, final int position) {
             holder.name.setText(recipes.get(position).getName());
             holder.desc.setText(recipes.get(position).getDescription());
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemClickListener.onItemClick(holder,position);
+                }
+            });
+
     }
 
     @Override

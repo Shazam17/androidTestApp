@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,9 +32,32 @@ public class FragmentList extends Fragment {
 
         MainActivity activity = (MainActivity)getActivity();
 
-        adapter = new RecipeAdapter(activity.getRecipes());
+        adapter = new RecipeAdapter(activity.getRecipes(), new RecipeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecipeAdapter.RecipeHolder holder, int position){
+                FragmentTransaction transaction  = getActivity().getSupportFragmentManager().beginTransaction();
+
+                FragmentDetails details = new FragmentDetails();
+
+
+                Toast.makeText(getActivity(), Integer.toString(position), Toast.LENGTH_SHORT).show();
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("pos",position);
+                details.setArguments(bundle);
+
+                transaction.addToBackStack(null);
+
+
+                transaction.replace(R.id.container,details);
+
+                transaction.commit();
+            }
+        });
         manager = new LinearLayoutManager(getActivity());
         recList.setAdapter(adapter);
+
+
 
         recList.setLayoutManager(manager);
 

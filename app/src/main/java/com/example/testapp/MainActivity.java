@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
                     fragmentList = new FragmentList();
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.container,fragmentList);
+                    transaction.addToBackStack(null);
+
                     transaction.commit();
 
                 }else{

@@ -54,4 +54,8 @@ public class recipe {
         return description;
     }
 
+    UUID getUUID(){
+        return this.uuid;
+    }
+
 }
